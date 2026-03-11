@@ -2,10 +2,8 @@ using System.CommandLine;
 
 namespace Runner.Scenarios;
 
-public static class FactorRunner
+public class FactorRunner : BaseScenario
 {
-    public static readonly Command Command = new("factor", "Run Factor computation");
-
     public static readonly Option<int> SizeOption = new("--amount", "-a")
     {
         Description = "Amount of input",
@@ -23,27 +21,21 @@ public static class FactorRunner
         }
     };
 
-    static FactorRunner()
+    public FactorRunner() : base("factor", "Run Factor computation")
     {
-        Command.Options.Add(SizeOption);
-        Command.SetAction(RunAsync);
+        Options.Add(SizeOption);
+        SetAction(RunAsync);
     }
 
-    private static async Task RunAsync(ParseResult parseResult)
+    protected override async Task RunAsync(ParseResult parseResult)
     {
-        var threads = parseResult.GetValue(GlobalOptions.ThreadsOption);
+        await base.RunAsync(parseResult);
+
         var size = parseResult.GetValue(SizeOption);
 
         // TODO: Implement Factor runner
         Console.WriteLine("Factor runner - will be implemented soon");
-        IntroduceParams(threads, size);
-
+        Console.WriteLine($"  amount:  {size}");
         await Task.CompletedTask;
     }
-
-    private static void IntroduceParams(int threads, int size)
-    {
-        Console.WriteLine($"  threads: {threads}");
-        Console.WriteLine($"  amount:  {size}");
-    }
-} 
+}

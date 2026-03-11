@@ -9,23 +9,20 @@ public static class Program
 
     public static readonly IReadOnlyList<Command> Commands =
     [
-        MonteCarloRunner.Command,
-        FactorRunner.Command,
-        SimpleRunner.Command,
+        new MonteCarloRunner(),
+        new FactorRunner(),
+        new SimpleRunner(),
     ];
 
     public static async Task<int> Main(string[] args)
     {
-        RootCommand.Options.Add(GlobalOptions.ThreadsOption);
-
         foreach (var command in Commands)
         {
             RootCommand.Subcommands.Add(command);
         }
 
-        var parseResult = RootCommand.Parse(args);
-
-        return await parseResult
+        return await RootCommand
+            .Parse(args)
             .InvokeAsync();
     }
 }

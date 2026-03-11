@@ -2,22 +2,16 @@ using System.CommandLine;
 
 namespace Runner.Scenarios;
 
-public static class SimpleRunner
+public class SimpleRunner : BaseScenario
 {
-    public static readonly Command Command = new("simple", "Run Simple actions");
-
-    static SimpleRunner()
+    public SimpleRunner() : base("simple", "Run simple computation")
     {
-        Command.SetAction(RunAsync);
+        SetAction(RunAsync);
     }
 
-    private static async Task RunAsync(ParseResult parseResult)
+    protected override async Task RunAsync(ParseResult parseResult)
     {
-        var threads = parseResult.GetValue(GlobalOptions.ThreadsOption);
-
-        // TODO: Implement Simple runner
-        Console.WriteLine("Simple runner - will be implemented soon");
-        Console.WriteLine($"  threads: {threads}");
+        await base.RunAsync(parseResult);
         await Task.CompletedTask;
     }
 }
