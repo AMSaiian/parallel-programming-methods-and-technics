@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="FirstLabSimpleActions/FirstLabSimpleActions.csproj" />
+  <Project Path="Runner/Runner.csproj" />
+</Solution>
