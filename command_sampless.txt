@@ -1,0 +1,62 @@
+# Sample commands for all Runner scenarios
+# Run from: src/Runner/
+# Usage:  dotnet run <command> [options]
+#
+# Global options (available on all commands):
+#   -t, --threads <n>   (REQUIRED) Number of threads
+#   -s, --seed <n>      Random seed for reproducibility (default: Environment.TickCount)
+#   -vs, --verbose      Show detailed result output (flag, no value needed)
+
+# ---------------------------------------------------------------------------
+# monte  –  MonteCarlo π estimation
+#   -i, --iterations <n>   (required) Number of random samples
+# ---------------------------------------------------------------------------
+
+dotnet run monte -t 2  -i 10000000 -s 42 -vs
+dotnet run monte -t 4  -i 10000000 -s 42 -vs
+dotnet run monte -t 6  -i 10000000 -s 42 -vs
+dotnet run monte -t 12 -i 10000000 -s 42 -vs
+
+# ---------------------------------------------------------------------------
+# factor  –  Factorial computation (BigInteger, computes 1! through n!)
+#   -m, --member <n>   (required) Compute up to n!
+# ---------------------------------------------------------------------------
+
+dotnet run factor -t 2  -m 10000
+dotnet run factor -t 4  -m 10000
+dotnet run factor -t 6  -m 10000
+dotnet run factor -t 12 -m 10000
+
+# ---------------------------------------------------------------------------
+# simple  –  Prime number search (trial division)
+#   -lo, --lower <n>   (required) Lower bound (inclusive, >= 2)
+#   -up, --upper <n>   (required) Upper bound (inclusive)
+# ---------------------------------------------------------------------------
+
+dotnet run simple -t 2  -lo 2 -up 10000000 -vs
+dotnet run simple -t 4  -lo 2 -up 10000000 -vs
+dotnet run simple -t 6  -lo 2 -up 10000000 -vs
+dotnet run simple -t 12 -lo 2 -up 10000000 -vs
+
+# ---------------------------------------------------------------------------
+# matrix  –  N×N matrix transposition (double[,])
+#   -d, --dim <n>   Matrix dimension N (default: 10000)
+# ---------------------------------------------------------------------------
+
+dotnet run matrix -t 2  -d 10000 -s 42 -vs
+dotnet run matrix -t 4  -d 10000 -s 42 -vs
+dotnet run matrix -t 6  -d 10000 -s 42 -vs
+dotnet run matrix -t 12 -d 10000 -s 42 -vs
+
+# ---------------------------------------------------------------------------
+# words  –  Recursive word count in randomly generated text files
+#   -fc, --files <n>     Number of .txt files to generate (1–10000, default: 1000)
+#   -w,  --words <n>     Max words per file, uniform [0, n] (1–100000, default: 500)
+#   -fd, --folders <n>   Number of subdirectories in tree (1–10000, default: 100)
+#   -td, --teardown      Preserve generated files after run (flag, default: delete)
+# ---------------------------------------------------------------------------
+
+dotnet run words -t 2  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
+dotnet run words -t 4  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
+dotnet run words -t 6  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
+dotnet run words -t 12 -fc 10000 -w 10000 -fd 1000 -s 42 -vs
