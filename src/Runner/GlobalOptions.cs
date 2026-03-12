@@ -7,7 +7,7 @@ public static class GlobalOptions
     public static readonly Option<int> ThreadsOption = new("--threads", "-t")
     {
         Description = "Number of threads",
-        DefaultValueFactory = _ => 1,
+        Required = true,
         Validators =
         {
             optionResult =>
@@ -42,5 +42,6 @@ public static class GlobalOptions
     {
         Description = "Show detailed result output",
         DefaultValueFactory = _ => false,
+        Arity = ArgumentArity.ZeroOrOne,
     };
 }

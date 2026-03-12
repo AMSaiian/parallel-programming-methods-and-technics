@@ -33,16 +33,16 @@ public class WordCountRunner : BaseScenario
 
     public static readonly Option<int> WordsPerFileOption = new("--words", "-w")
     {
-        Description = "Approximate number of words per file (max 10000)",
+        Description = "Maximum number of words per file (max 100000)",
         DefaultValueFactory = _ => 500,
         Validators =
         {
             optionResult =>
             {
                 var value = optionResult.GetValueOrDefault<int>();
-                if (value is < 1 or > 10000)
+                if (value is < 1 or > 100000)
                 {
-                    optionResult.AddError("Words per file must be between 1 and 10000.");
+                    optionResult.AddError("Words per file must be between 1 and 100000.");
                 }
             }
         }
@@ -69,6 +69,7 @@ public class WordCountRunner : BaseScenario
     {
         Description = "Preserve generated files after run (default: false)",
         DefaultValueFactory = _ => false,
+        Arity = ArgumentArity.ZeroOrOne,
     };
 
     public WordCountRunner() : base("words", "Recursively count words in randomly generated text files")
