@@ -34,14 +34,21 @@ public class FactorRunner : BaseScenario
 
         var threads = parseResult.GetValue(GlobalOptions.ThreadsOption);
         var amount = parseResult.GetValue(SizeOption);
+        var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
 
         var (seqMs, seqResult) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(amount)));
-        Console.WriteLine($"  sequential: computed {amount} factorial (took {seqMs} ms)");
-        // Console.WriteLine($"  {amount}! = {seqResults[^1]}");
+        Console.WriteLine($"  sequential: took {seqMs} ms");
+        if (verbose)
+        {
+            Console.WriteLine($"    {amount}! = {seqResult}");
+        }
 
         var (parMs, parResult) = await ExecuteWithTimingAsync(() => RunParallel(amount, threads));
-        Console.WriteLine($"  parallel:   computed {amount} factorial (took {parMs} ms)");
-        // Console.WriteLine($"  {amount}! = {parResults[^1]}");
+        Console.WriteLine($"  parallel:   took {parMs} ms");
+        if (verbose)
+        {
+            Console.WriteLine($"    {amount}! = {parResult}");
+        }
     }
 
     private static BigInteger RunSequential(int amount)

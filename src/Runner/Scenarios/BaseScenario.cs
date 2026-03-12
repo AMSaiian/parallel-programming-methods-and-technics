@@ -9,6 +9,7 @@ public abstract class BaseScenario : Command
     {
         Options.Add(GlobalOptions.ThreadsOption);
         Options.Add(GlobalOptions.SeedOption);
+        Options.Add(GlobalOptions.VerboseOption);
     }
 
     protected virtual void SetupEnvironment(ParseResult parseResult)

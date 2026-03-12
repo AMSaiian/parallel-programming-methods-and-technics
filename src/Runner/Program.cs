@@ -12,6 +12,8 @@ public static class Program
         new MonteCarloRunner(),
         new FactorRunner(),
         new SimpleRunner(),
+        new MatrixTransposeRunner(),
+        new WordCountRunner(),
     ];
 
     public static async Task<int> Main(string[] args)

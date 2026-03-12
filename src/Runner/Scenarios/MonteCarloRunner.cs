@@ -34,12 +34,21 @@ public class MonteCarloRunner : BaseScenario
         var threads = parseResult.GetValue(GlobalOptions.ThreadsOption);
         var iterations = parseResult.GetValue(IterationsOption);
         var seed = parseResult.GetValue(GlobalOptions.SeedOption);
+        var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
 
         var (seqMs, seqPi) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(iterations, seed)));
-        Console.WriteLine($"  sequential π ≈ {seqPi} (took {seqMs} ms)");
+        Console.WriteLine($"  sequential: took {seqMs} ms");
+        if (verbose)
+        {
+            Console.WriteLine($"    π ≈ {seqPi}");
+        }
 
         var (parMs, parPi) = await ExecuteWithTimingAsync(() => RunParallel(iterations, threads, seed));
-        Console.WriteLine($"  parallel   π ≈ {parPi} (took {parMs} ms)");
+        Console.WriteLine($"  parallel:   took {parMs} ms");
+        if (verbose)
+        {
+            Console.WriteLine($"    π ≈ {parPi}");
+        }
     }
 
     private static double RunSequential(int iterations, int seed)

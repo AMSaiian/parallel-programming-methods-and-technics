@@ -37,4 +37,10 @@ public static class GlobalOptions
             }
         }
     };
+
+    public static readonly Option<bool> VerboseOption = new("--verbose", "-vs")
+    {
+        Description = "Show detailed result output",
+        DefaultValueFactory = _ => false,
+    };
 }
