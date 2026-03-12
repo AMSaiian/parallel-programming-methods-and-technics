@@ -61,19 +61,21 @@ public class FactorRunner : BaseScenario
         int chunkSize = amount / threadCount;
         var chunkProducts = new BigInteger[threadCount];
 
-        var tasks = Enumerable.Range(0, threadCount).Select(threadIndex => Task.Run(() =>
-        {
-            int chunkStart = threadIndex * chunkSize + 1;
-            int chunkEnd = (threadIndex == threadCount - 1) ? amount : (threadIndex + 1) * chunkSize;
-
-            BigInteger product = BigInteger.One;
-            for (int number = chunkStart; number <= chunkEnd; number++)
+        var tasks = Enumerable
+            .Range(0, threadCount)
+            .Select(threadIndex => Task.Run(() =>
             {
-                product *= number;
-            }
+                int chunkStart = threadIndex * chunkSize + 1;
+                int chunkEnd = (threadIndex == threadCount - 1) ? amount : (threadIndex + 1) * chunkSize;
 
-            chunkProducts[threadIndex] = product;
-        }));
+                BigInteger product = BigInteger.One;
+                for (int number = chunkStart; number <= chunkEnd; number++)
+                {
+                    product *= number;
+                }
+
+                chunkProducts[threadIndex] = product;
+            }));
 
         await Task.WhenAll(tasks);
 
