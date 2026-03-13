@@ -106,7 +106,7 @@ public class WordCountRunner : BaseScenario
                 Console.WriteLine($"  found {files.Length} .txt files across directory tree");
             }
 
-            var (seqMs, seqCount) = await ExecuteWithTimingAsync(() => Task.FromResult(CountWordsSequential(files)));
+            var (seqMs, seqCount) = await ExecuteWithTimingAsync(() => CountWordsSequential(files));
             Console.WriteLine($"  sequential: {seqCount} words (took {seqMs} ms)");
 
             var (parMs, parCount) = await ExecuteWithTimingAsync(() => CountWordsParallel(files, threads));
@@ -163,13 +163,13 @@ public class WordCountRunner : BaseScenario
         }
     }
 
-    private static long CountWordsSequential(string[] files)
+    private static async Task<long> CountWordsSequential(string[] files)
     {
         var total = 0L;
 
         foreach (var file in files)
         {
-            total += CountWordsInFile(file);
+            total += await CountWordsInFile(file);
         }
 
         return total;
@@ -180,7 +180,7 @@ public class WordCountRunner : BaseScenario
         var chunkSize = files.Length / threads;
         var counts = new long[threads];
 
-        var tasks = Enumerable.Range(0, threads).Select(t => Task.Run(() =>
+        var tasks = Enumerable.Range(0, threads).Select(t => Task.Run(async () =>
         {
             var start = t * chunkSize;
             int end;
@@ -196,7 +196,7 @@ public class WordCountRunner : BaseScenario
             var localCount = 0L;
             for (var i = start; i < end; i++)
             {
-                localCount += CountWordsInFile(files[i]);
+                localCount += await CountWordsInFile(files[i]);
             }
 
             counts[t] = localCount;
@@ -207,12 +207,12 @@ public class WordCountRunner : BaseScenario
         return counts.Sum();
     }
 
-    private static long CountWordsInFile(string path)
+    private static async Task<long> CountWordsInFile(string path)
     {
         var count = 0L;
         var inWord = false;
 
-        foreach (var ch in File.ReadAllText(path))
+        foreach (var ch in await File.ReadAllTextAsync(path))
         {
             if (char.IsWhiteSpace(ch))
             {
