@@ -1,7 +1,7 @@
 using System.CommandLine;
 using System.Diagnostics;
 
-namespace Runner.Scenarios;
+namespace Core.Scenarios;
 
 public abstract class BaseScenario : Command
 {

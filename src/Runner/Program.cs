@@ -1,5 +1,4 @@
-﻿using System.CommandLine;
-using Runner.Scenarios;
+using System.CommandLine;
 
 namespace Runner;
 
@@ -9,11 +8,8 @@ public static class Program
 
     public static readonly IReadOnlyList<Command> Commands =
     [
-        new MonteCarloRunner(),
-        new FactorRunner(),
-        new SimpleRunner(),
-        new MatrixTransposeRunner(),
-        new WordCountRunner(),
+        ..PrimitiveParallelism.Commands.All,
+        ..PatternParallelism.Commands.All,
     ];
 
     public static async Task<int> Main(string[] args)

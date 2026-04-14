@@ -1,6 +1,8 @@
 using System.CommandLine;
+using Core;
+using Core.Scenarios;
 
-namespace Runner.Scenarios;
+namespace PrimitiveParallelism.Scenarios;
 
 public class MonteCarloRunner : BaseScenario
 {
@@ -36,14 +38,14 @@ public class MonteCarloRunner : BaseScenario
         var seed = parseResult.GetValue(GlobalOptions.SeedOption);
         var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
 
-        var (seqMs, seqPi) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(iterations, seed)));
+        (var seqMs, var seqPi) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(iterations, seed)));
         Console.WriteLine($"  sequential: took {seqMs} ms");
         if (verbose)
         {
             Console.WriteLine($"    π ≈ {seqPi}");
         }
 
-        var (parMs, parPi) = await ExecuteWithTimingAsync(() => RunParallel(iterations, threads, seed));
+        (var parMs, var parPi) = await ExecuteWithTimingAsync(() => RunParallel(iterations, threads, seed));
         Console.WriteLine($"  parallel:   took {parMs} ms");
         if (verbose)
         {

@@ -1,6 +1,8 @@
 using System.CommandLine;
+using Core;
+using Core.Scenarios;
 
-namespace Runner.Scenarios;
+namespace PrimitiveParallelism.Scenarios;
 
 public class MatrixTransposeRunner : BaseScenario
 {
@@ -43,7 +45,7 @@ public class MatrixTransposeRunner : BaseScenario
         var seed = parseResult.GetValue(GlobalOptions.SeedOption);
         var source = CreateMatrix(size);
 
-        var (seqMs, seqResult) = await ExecuteWithTimingAsync(() => Task.FromResult(TransposeSequential(source, size)));
+        (var seqMs, var seqResult) = await ExecuteWithTimingAsync(() => Task.FromResult(TransposeSequential(source, size)));
         Console.WriteLine($"  sequential: took {seqMs} ms");
         if (verbose)
         {
@@ -53,7 +55,7 @@ public class MatrixTransposeRunner : BaseScenario
             Console.WriteLine($"    verify: source[{i},{j}] = {source[i, j]}, result[{j},{i}] = {seqResult[j, i]}");
         }
 
-        var (parMs, parResult) = await ExecuteWithTimingAsync(() => TransposeParallel(source, size, threads));
+        (var parMs, var parResult) = await ExecuteWithTimingAsync(() => TransposeParallel(source, size, threads));
         Console.WriteLine($"  parallel:   took {parMs} ms");
         if (verbose)
         {

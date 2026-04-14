@@ -682,4 +682,8 @@ fabric.properties
 .history
 .ionide
 
+### User-Defined ###
+src/Static/*
+*/.claude/*
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,csharp,aspnetcore,visualstudiocode,rider,intellij+all

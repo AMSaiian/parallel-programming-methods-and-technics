@@ -1,7 +1,9 @@
 using System.CommandLine;
 using System.Text;
+using Core;
+using Core.Scenarios;
 
-namespace Runner.Scenarios;
+namespace PrimitiveParallelism.Scenarios;
 
 public class WordCountRunner : BaseScenario
 {
@@ -106,10 +108,10 @@ public class WordCountRunner : BaseScenario
                 Console.WriteLine($"  found {files.Length} .txt files across directory tree");
             }
 
-            var (seqMs, seqCount) = await ExecuteWithTimingAsync(() => CountWordsSequential(files));
+            (var seqMs, var seqCount) = await ExecuteWithTimingAsync(() => CountWordsSequential(files));
             Console.WriteLine($"  sequential: {seqCount} words (took {seqMs} ms)");
 
-            var (parMs, parCount) = await ExecuteWithTimingAsync(() => CountWordsParallel(files, threads));
+            (var parMs, var parCount) = await ExecuteWithTimingAsync(() => CountWordsParallel(files, threads));
             Console.WriteLine($"  parallel:   {parCount} words (took {parMs} ms)");
         }
         finally

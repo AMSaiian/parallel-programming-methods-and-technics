@@ -1,6 +1,6 @@
 using System.CommandLine;
 
-namespace Runner;
+namespace Core;
 
 public static class GlobalOptions
 {

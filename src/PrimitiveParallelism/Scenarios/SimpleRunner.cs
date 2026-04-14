@@ -1,6 +1,8 @@
 using System.CommandLine;
+using Core;
+using Core.Scenarios;
 
-namespace Runner.Scenarios;
+namespace PrimitiveParallelism.Scenarios;
 
 public class SimpleRunner : BaseScenario
 {
@@ -60,14 +62,14 @@ public class SimpleRunner : BaseScenario
             return;
         }
 
-        var (seqMs, seqPrimes) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(lower, upper)));
+        (var seqMs, var seqPrimes) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(lower, upper)));
         Console.WriteLine($"  sequential: found {seqPrimes.Count} primes in [{lower}, {upper}] (took {seqMs} ms)");
         if (verbose && seqPrimes.Count > 0)
         {
             Console.WriteLine($"    largest prime: {seqPrimes[^1]}");
         }
 
-        var (parMs, parPrimes) = await ExecuteWithTimingAsync(() => RunParallel(lower, upper, threads));
+        (var parMs, var parPrimes) = await ExecuteWithTimingAsync(() => RunParallel(lower, upper, threads));
         Console.WriteLine($"  parallel:   found {parPrimes.Count} primes in [{lower}, {upper}] (took {parMs} ms)");
         if (verbose && parPrimes.Count > 0)
         {

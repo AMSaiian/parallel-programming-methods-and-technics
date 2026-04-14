@@ -1,7 +1,9 @@
 using System.CommandLine;
 using System.Numerics;
+using Core;
+using Core.Scenarios;
 
-namespace Runner.Scenarios;
+namespace PrimitiveParallelism.Scenarios;
 
 public class FactorRunner : BaseScenario
 {
@@ -36,14 +38,14 @@ public class FactorRunner : BaseScenario
         var amount = parseResult.GetValue(SizeOption);
         var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
 
-        var (seqMs, seqResult) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(amount)));
+        (var seqMs, var seqResult) = await ExecuteWithTimingAsync(() => Task.FromResult(RunSequential(amount)));
         Console.WriteLine($"  sequential: took {seqMs} ms");
         if (verbose)
         {
             Console.WriteLine($"    {amount}! = {seqResult}");
         }
 
-        var (parMs, parResult) = await ExecuteWithTimingAsync(() => RunParallel(amount, threads));
+        (var parMs, var parResult) = await ExecuteWithTimingAsync(() => RunParallel(amount, threads));
         Console.WriteLine($"  parallel:   took {parMs} ms");
         if (verbose)
         {
