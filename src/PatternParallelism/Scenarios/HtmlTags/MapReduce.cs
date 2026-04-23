@@ -7,14 +7,14 @@ internal static class MapReduce
     {
         var chunkSize = (int)Math.Ceiling(files.Length / (double)threads);
 
-        var mapTasks = Enumerable.Range(0, threads).Select(t => Task.Run(() =>
+        var mapTasks = Enumerable.Range(0, threads).Select(t => Task.Run(async () =>
         {
             var start = t * chunkSize;
             var end = Math.Min(start + chunkSize, files.Length);
             var local = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             for (var i = start; i < end; i++)
             {
-                Parser.Merge(local, Parser.ParseFile(files[i]));
+                Parser.Merge(local, await Parser.ParseFileAsync(files[i]));
             }
             return local;
         }));

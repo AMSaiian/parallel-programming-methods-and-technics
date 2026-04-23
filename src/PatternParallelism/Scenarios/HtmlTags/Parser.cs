@@ -7,9 +7,9 @@ internal static class Parser
     private static readonly Regex TagRegex =
         new(@"</?(\w[\w\d]*)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-    internal static Dictionary<string, int> ParseFile(string path)
+    internal static async Task<Dictionary<string, int>> ParseFileAsync(string path)
     {
-        var html = File.ReadAllText(path);
+        var html = await File.ReadAllTextAsync(path);
         var counts = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
         foreach (Match m in TagRegex.Matches(html))
         {

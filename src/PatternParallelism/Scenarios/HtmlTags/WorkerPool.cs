@@ -18,7 +18,7 @@ internal static class WorkerPool
         {
             await foreach (var file in channel.Reader.ReadAllAsync())
             {
-                Parser.Merge(workerDicts[t], Parser.ParseFile(file));
+                Parser.Merge(workerDicts[t], await Parser.ParseFileAsync(file));
             }
         })).ToArray();
 

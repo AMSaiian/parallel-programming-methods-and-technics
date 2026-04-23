@@ -19,7 +19,7 @@ internal static class ForkJoin
             var local = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             for (var i = start; i < end; i++)
             {
-                Parser.Merge(local, Parser.ParseFile(files[i]));
+                Parser.Merge(local, await Parser.ParseFileAsync(files[i]));
             }
             return local;
         }
