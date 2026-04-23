@@ -16,7 +16,7 @@ dataset = load_dataset(
 
 file_count = 0
 for row in dataset:
-    if file_count >= 1000:
+    if file_count >= 10000:
         break
         
     html_content = row.get('text_html_raw')

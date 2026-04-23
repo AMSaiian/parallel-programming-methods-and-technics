@@ -15,6 +15,7 @@ public class Runner : BaseScenario
     public Runner() : base("tags", "Count HTML tag frequencies across a dataset of HTML files")
     {
         Options.Add(PatternOptions.Algorithm);
+        Options.Add(PatternOptions.WithSequential);
         Options.Add(DirectoryOption);
         SetAction(RunAsync);
     }
@@ -27,6 +28,7 @@ public class Runner : BaseScenario
         var algo = parseResult.GetValue(PatternOptions.Algorithm)!.ToLowerInvariant();
         var dir = parseResult.GetValue(DirectoryOption)!;
         var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
+        var withSequential = parseResult.GetValue(PatternOptions.WithSequential);
 
         if (!Directory.Exists(dir))
         {
@@ -44,7 +46,7 @@ public class Runner : BaseScenario
         (var ms, var tagCounts) = algo switch
         {
             "sequential" => await ExecuteWithTimingAsync(() => Sequential.Run(files)),
-            "mapreduce" => await ExecuteWithTimingAsync(() => MapReduce.Run(files, threads)),
+            "reducemap" => await ExecuteWithTimingAsync(() => MapReduce.Run(files, threads)),
             "forkjoin" => await ExecuteWithTimingAsync(() => ForkJoin.Run(files, threads)),
             "workerpool" => await ExecuteWithTimingAsync(() => WorkerPool.Run(files, threads)),
             _ => throw new InvalidOperationException($"Unknown algorithm: {algo}")
@@ -57,6 +59,25 @@ public class Runner : BaseScenario
             foreach ((var tag, var count) in tagCounts.OrderByDescending(kv => kv.Value).Take(10))
             {
                 Console.WriteLine($"    <{tag}>: {count}");
+            }
+        }
+
+        if (algo != "sequential" && withSequential)
+        {
+            (var seqMs, var seqTagCounts) = await ExecuteWithTimingAsync(() => Sequential.Run(files));
+
+            Console.WriteLine($"  sequential: {seqTagCounts.Count} distinct tags (took {seqMs} ms)");
+
+            var speedup = (double)seqMs / ms;
+            var efficiency = speedup / threads;
+            Console.WriteLine($"  speedup={speedup:F2}x  efficiency={efficiency:F4}");
+
+            if (verbose)
+            {
+                foreach ((var tag, var count) in seqTagCounts.OrderByDescending(kv => kv.Value).Take(10))
+                {
+                    Console.WriteLine($"    <{tag}>: {count}");
+                }
             }
         }
     }

@@ -17,9 +17,9 @@ internal static class WorkerPull
             var lMin = double.MaxValue;
             var lMax = double.MinValue;
             var lSum = 0.0;
-            await foreach ((var s, var e) in channel.Reader.ReadAllAsync())
+            await foreach ((var pStart, var pEnd) in channel.Reader.ReadAllAsync())
             {
-                (var pMin, var pMax, var pSum) = Seeder.PartialScan(data, s, e);
+                (var pMin, var pMax, var pSum) = Common.PartialScan(data, pStart, pEnd);
                 if (pMin < lMin)
                 {
                     lMin = pMin;
@@ -57,6 +57,6 @@ internal static class WorkerPull
             }
             sumAll += rSum;
         }
-        return new ScanResult(min, max, sumAll / data.Length, Seeder.ComputeMedian(data, parallel: true));
+        return new ScanResult(min, max, sumAll / data.Length, Common.ComputeMedian(data, threads));
     }
 }

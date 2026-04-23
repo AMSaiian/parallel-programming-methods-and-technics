@@ -4,18 +4,18 @@ namespace PatternParallelism;
 
 public static class PatternOptions
 {
-    public static readonly Option<string> Algorithm = new("--algo", "-a")
+    public static readonly Option<string> Algorithm = new("--algo", "-al")
     {
-        Description = "Parallel pattern: sequential | mapreduce | forkjoin | workerpool",
+        Description = "Parallel pattern: sequential | reducemap | forkjoin | workerpool",
         Required = true,
         Validators =
         {
             optionResult =>
             {
                 var value = optionResult.GetValueOrDefault<string>()?.ToLowerInvariant();
-                if (value is not ("sequential" or "mapreduce" or "forkjoin" or "workerpool"))
+                if (value is not ("sequential" or "reducemap" or "forkjoin" or "workerpool"))
                 {
-                    optionResult.AddError("Algorithm must be one of: sequential, mapreduce, forkjoin, workerpool.");
+                    optionResult.AddError("Algorithm must be one of: sequential, reducemap, forkjoin, workerpool.");
                 }
             }
         }

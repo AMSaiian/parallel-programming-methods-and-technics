@@ -60,3 +60,87 @@ dotnet run words -t 2  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
 dotnet run words -t 4  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
 dotnet run words -t 6  -fc 10000 -w 10000 -fd 1000 -s 42 -vs
 dotnet run words -t 12 -fc 10000 -w 10000 -fd 1000 -s 42 -vs
+
+# ---------------------------------------------------------------------------
+# stats  –  Compute min, max, mean and median of a large random array
+#   -al,  --algo <name>   (required) Pattern: sequential | reducemap | forkjoin | workerpool
+#   -sz, --size <n>      Number of elements (>= 1 000 000, default: 1 000 000)
+#   -sq, --seq           Also run sequential and print speedup + efficiency (flag)
+# ---------------------------------------------------------------------------
+
+dotnet run stats -t 2  -al reducemap   -sz 5000000 -s 42 -sq
+dotnet run stats -t 4  -al reducemap   -sz 5000000 -s 42 -sq
+dotnet run stats -t 6  -al reducemap   -sz 5000000 -s 42 -sq
+dotnet run stats -t 12 -al reducemap   -sz 5000000 -s 42 -sq
+
+dotnet run stats -t 2  -al forkjoin    -sz 5000000 -s 42 -sq
+dotnet run stats -t 4  -al forkjoin    -sz 5000000 -s 42 -sq
+dotnet run stats -t 6  -al forkjoin    -sz 5000000 -s 42 -sq
+dotnet run stats -t 12 -al forkjoin    -sz 5000000 -s 42 -sq
+
+dotnet run stats -t 2  -al workerpool  -sz 5000000 -s 42 -sq
+dotnet run stats -t 4  -al workerpool  -sz 5000000 -s 42 -sq
+dotnet run stats -t 6  -al workerpool  -sz 5000000 -s 42 -sq
+dotnet run stats -t 12 -al workerpool  -sz 5000000 -s 42 -sq
+
+# ---------------------------------------------------------------------------
+# tags  –  Count HTML tag frequencies across a dataset of HTML files
+#   -al,  --algo <name>   (required) Pattern: sequential | reducemap | forkjoin | workerpool
+#   -d,  --dir  <path>   (required) Path to directory containing HTML files (recursive)
+#   -sq, --seq           Also run sequential and print speedup + efficiency (flag)
+#   -vs, --verbose       Print top-10 tags by frequency
+# ---------------------------------------------------------------------------
+
+dotnet run tags -t 2  -al reducemap   -d ../Static/html -sq
+dotnet run tags -t 4  -al reducemap   -d ../Static/html -sq
+dotnet run tags -t 6  -al reducemap   -d ../Static/html -sq
+dotnet run tags -t 12 -al reducemap   -d ../Static/html -sq
+dotnet run tags -t 2  -al forkjoin    -d ../Static/html -sq
+dotnet run tags -t 4  -al forkjoin    -d ../Static/html -sq
+dotnet run tags -t 6  -al forkjoin    -d ../Static/html -sq
+dotnet run tags -t 12 -al forkjoin    -d ../Static/html -sq
+dotnet run tags -t 2  -al workerpool  -d ../Static/html -sq
+dotnet run tags -t 4  -al workerpool  -d ../Static/html -sq
+dotnet run tags -t 6  -al workerpool  -d ../Static/html -sq
+dotnet run tags -t 12 -al workerpool  -d ../Static/html -sq
+
+# ---------------------------------------------------------------------------
+# matmul  –  Multiply two large N×N matrices
+#   -al,  --algo <name>   (required) Pattern: sequential | reducemap | forkjoin | workerpool
+#   -d,  --dim  <n>      Matrix dimension N (default: 1000)
+#   -sq, --seq           Also run sequential and print speedup + efficiency (flag)
+#   -vs, --verbose       Print top-left 3×3 corner of result matrix
+# ---------------------------------------------------------------------------
+
+dotnet run matmul -t 2  -al reducemap   -d 1000 -s 42 -sq
+dotnet run matmul -t 4  -al reducemap   -d 1000 -s 42 -sq
+dotnet run matmul -t 6  -al reducemap   -d 1000 -s 42 -sq
+dotnet run matmul -t 12 -al reducemap   -d 1000 -s 42 -sq
+
+dotnet run matmul -t 2  -al forkjoin    -d 1000 -s 42 -sq
+dotnet run matmul -t 4  -al forkjoin    -d 1000 -s 42 -sq
+dotnet run matmul -t 6  -al forkjoin    -d 1000 -s 42 -sq
+dotnet run matmul -t 12 -al forkjoin    -d 1000 -s 42 -sq
+
+dotnet run matmul -t 2  -al workerpool  -d 1000 -s 42 -sq
+dotnet run matmul -t 4  -al workerpool  -d 1000 -s 42 -sq
+dotnet run matmul -t 6  -al workerpool  -d 1000 -s 42 -sq
+dotnet run matmul -t 12 -al workerpool  -d 1000 -s 42 -sq
+
+# ---------------------------------------------------------------------------
+# transactions  –  Financial transaction processing: currency conversion, cashback, aggregation
+#   -al,  --algo <name>   (required) Pattern: sequential | pipeline | producerconsumer
+#   -c,  --count <n>      Number of transactions to generate (>= 10 000, default: 100 000)
+#   -sq, --seq            Also run sequential and print speedup + efficiency (flag)
+#   -vs, --verbose        Print first 5 transactions with per-step amounts
+# ---------------------------------------------------------------------------
+
+dotnet run transactions -t 2  -al pipeline          -ct 500000 -s 42 -sq
+dotnet run transactions -t 4  -al pipeline          -ct 500000 -s 42 -sq
+dotnet run transactions -t 6  -al pipeline          -ct 500000 -s 42 -sq
+dotnet run transactions -t 12 -al pipeline          -ct 500000 -s 42 -sq
+
+dotnet run transactions -t 2  -al producerconsumer  -ct 500000 -s 42 -sq
+dotnet run transactions -t 4  -al producerconsumer  -ct 500000 -s 42 -sq
+dotnet run transactions -t 6  -al producerconsumer  -ct 500000 -s 42 -sq
+dotnet run transactions -t 12 -al producerconsumer  -ct 500000 -s 42 -sq

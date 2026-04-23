@@ -9,5 +9,6 @@ public static class Commands
         new Scenarios.HtmlTags.Runner(),
         new Scenarios.ArrayStats.Runner(),
         new Scenarios.MatMul.Runner(),
+        new Scenarios.Transactions.Runner(),
     ];
 }

@@ -26,6 +26,7 @@ public class Runner : BaseScenario
     public Runner() : base("matmul", "Multiply two large N×N matrices")
     {
         Options.Add(PatternOptions.Algorithm);
+        Options.Add(PatternOptions.WithSequential);
         Options.Add(DimOption);
         SetAction(RunAsync);
     }
@@ -39,6 +40,7 @@ public class Runner : BaseScenario
         var n = parseResult.GetValue(DimOption);
         var seed = parseResult.GetValue(GlobalOptions.SeedOption);
         var verbose = parseResult.GetValue(GlobalOptions.VerboseOption);
+        var withSequential = parseResult.GetValue(PatternOptions.WithSequential);
 
         Console.WriteLine($"  seeding two {n}×{n} matrices (seed={seed})...");
         (var a, var b) = Seeder.Seed(n, seed);
@@ -46,7 +48,7 @@ public class Runner : BaseScenario
         (var ms, var c) = algo switch
         {
             "sequential" => await ExecuteWithTimingAsync(() => Task.FromResult(Sequential.Run(a, b, n))),
-            "mapreduce" => await ExecuteWithTimingAsync(() => MapReduce.Run(a, b, n, threads)),
+            "reducemap" => await ExecuteWithTimingAsync(() => MapReduce.Run(a, b, n, threads)),
             "forkjoin" => await ExecuteWithTimingAsync(() => ForkJoin.Run(a, b, n, threads)),
             "workerpool" => await ExecuteWithTimingAsync(() => WorkerPool.Run(a, b, n, threads)),
             _ => throw new InvalidOperationException($"Unknown algorithm: {algo}")
@@ -70,6 +72,17 @@ public class Runner : BaseScenario
                 var row = string.Join("  ", Enumerable.Range(0, Math.Min(3, n)).Select(j => $"{c[i, j]:F4}"));
                 Console.WriteLine($"    [ {row} ]");
             }
+        }
+
+        if (algo != "sequential" && withSequential)
+        {
+            (var seqMs, _) = await ExecuteWithTimingAsync(() => Task.FromResult(Sequential.Run(a, b, n)));
+
+            Console.WriteLine($"  sequential: took {seqMs} ms");
+
+            var speedup = (double)seqMs / ms;
+            var efficiency = speedup / threads;
+            Console.WriteLine($"  speedup={speedup:F2}x  efficiency={efficiency:F4}");
         }
     }
 }

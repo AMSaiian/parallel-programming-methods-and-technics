@@ -15,7 +15,7 @@ internal static class MapReduce
             {
                 return (double.MaxValue, double.MinValue, 0.0);
             }
-            return Seeder.PartialScan(data, start, end);
+            return Common.PartialScan(data, start, end);
         }));
 
         var partials = await Task.WhenAll(mapTasks);
@@ -37,6 +37,6 @@ internal static class MapReduce
             totalSum += pSum;
         }
 
-        return new ScanResult(min, max, totalSum / data.Length, Seeder.ComputeMedian(data, parallel: true));
+        return new ScanResult(min, max, totalSum / data.Length, Common.ComputeMedian(data, threads));
     }
 }
