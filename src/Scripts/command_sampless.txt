@@ -144,3 +144,37 @@ dotnet run transactions -t 2  -al producerconsumer  -ct 500000 -s 42 -sq
 dotnet run transactions -t 4  -al producerconsumer  -ct 500000 -s 42 -sq
 dotnet run transactions -t 6  -al producerconsumer  -ct 500000 -s 42 -sq
 dotnet run transactions -t 12 -al producerconsumer  -ct 500000 -s 42 -sq
+
+# ---------------------------------------------------------------------------
+# bank-transfer  –  Bank account transfers: race condition, deadlock, safe sync
+#   -sc, --scenario <name>   (required) Scenario: race | deadlock | safe
+#   -t,  --threads <n>       (required) Thread pool size
+#   -w,  --workers <n>       Number of concurrent worker tasks (>= 1000, default: 1000)
+#   -ac, --accounts <n>      Number of accounts (>= 100, default: 200)
+#   -d,  --duration <n>      Run duration in seconds (default: 5)
+#   -vs, --verbose           Print sample account balances after run
+# ---------------------------------------------------------------------------
+
+dotnet run bank-transfer -t 12 -w 1000 -sc race     -ac 200 -d 5 -s 42 -vs
+dotnet run bank-transfer -t 12 -w 1000 -sc deadlock -ac 200 -d 5 -s 42 -vs
+dotnet run bank-transfer -t 12 -w 1000 -sc safe     -ac 200 -d 5 -s 42 -vs
+
+# ---------------------------------------------------------------------------
+# ipc-demo  –  IPC between C# (main) and Java/MPJ Express (supplementary)
+#   Run via Scripts/run-ipc-demo.ps1 which starts both sides simultaneously.
+#
+#   run-ipc-demo.ps1 options:
+#   -Method <name>     (required) sharedmemory | namedpipe | tcp
+#   -Threads <n>       C# thread pool size (default: 12)
+#   -Seed <n>          Random seed (default: 42)
+#   -MpjHome <path>    MPJ Express dir (default: C:\mpj-v0_44)
+#   -Loud           Print verbose output
+#
+# Prerequisites:
+#   • JDK on PATH (javac + java)
+#   • MPJ Express installed at C:\mpj-v0_44 (or pass -MpjHome)
+# ---------------------------------------------------------------------------
+
+.\Scripts\run-ipc-demo.ps1 -Method sharedmemory -Loud
+.\Scripts\run-ipc-demo.ps1 -Method namedpipe    -Loud
+.\Scripts\run-ipc-demo.ps1 -Method tcp          -Loud

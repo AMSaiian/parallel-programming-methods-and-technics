@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="Core/Core.csproj" />
   <Project Path="PrimitiveParallelism/PrimitiveParallelism.csproj" />
+  <Project Path="MultiProcessAndResourceCompetitiveParallelism/MultiProcessAndResourceCompetitiveParallelism.csproj" />
   <Project Path="PatternParallelism/PatternParallelism.csproj" />
   <Project Path="Runner/Runner.csproj" />
 </Solution>

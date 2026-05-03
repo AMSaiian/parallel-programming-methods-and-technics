@@ -10,6 +10,7 @@ public static class Program
     [
         ..PrimitiveParallelism.Commands.All,
         ..PatternParallelism.Commands.All,
+        ..MultiProcessAndResourceCompetitiveParallelism.Commands.All,
     ];
 
     public static async Task<int> Main(string[] args)
