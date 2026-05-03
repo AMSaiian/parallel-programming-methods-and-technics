@@ -160,20 +160,14 @@ dotnet run bank-transfer -t 12 -w 1000 -sc deadlock -ac 200 -d 5 -s 42 -vs
 dotnet run bank-transfer -t 12 -w 1000 -sc safe     -ac 200 -d 5 -s 42 -vs
 
 # ---------------------------------------------------------------------------
-# ipc-demo  –  IPC between C# (main) and Java/MPJ Express (supplementary)
+# ipc-demo  –  IPC between C# (main) and Java (supplementary)
 #   Run via Scripts/run-ipc-demo.ps1 which starts both sides simultaneously.
 #
 #   run-ipc-demo.ps1 options:
 #   -Method <name>     (required) sharedmemory | namedpipe | tcp
 #   -Threads <n>       C# thread pool size (default: 12)
 #   -Seed <n>          Random seed (default: 42)
-#   -MpjHome <path>    MPJ Express dir (default: C:\mpj-v0_44)
 #   -Loud           Print verbose output
-#
-# Prerequisites:
-#   • JDK on PATH (javac + java)
-#   • MPJ Express installed at C:\mpj-v0_44 (or pass -MpjHome)
-# ---------------------------------------------------------------------------
 
 .\Scripts\run-ipc-demo.ps1 -Method sharedmemory -Loud
 .\Scripts\run-ipc-demo.ps1 -Method namedpipe    -Loud
